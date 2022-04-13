@@ -37,38 +37,15 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String
-    }
+    },
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
 
 })
 
 const User=mongoose.model('User',userSchema)
-
-const findByCredentials=async (email,password)=>{
-    
-    const user = await User.findOne({email:email})
-    
-    // const isMatch = await bcrypt.compare(password,user.password)
-    // if(! isMatch){
-    //     throw new Error('Unable to login')
-    // }
-    // return user
-
-    const isMatch =()=>{
-        if(!user){
-            return false
-        }
-        else if(user.password === password){
-            return user
-        }
-        else{
-            // console.log("password not match")
-            //  throw new Error('Unable to login')
-            return false
-        }  
-    }
-     return isMatch()
-}
-
-module.exports ={ User,findByCredentials}
-
-// module.exports = mongoose.model('User',userSchema)
+module.exports ={ User}

@@ -1,91 +1,90 @@
 
 
+////////  Authentication and token creation 
 
 
-// const { dashLogger } = require("../logger/logger");
+const {findByCredentials,generateAuthToken}= require("../CommonFunction/commonFun")
+const {User}  = require("../models/user")
 
-
-
-const {User,findByCredentials}  = require("../models/user")
-
-const siginingUp =async(req,res)=>{
+const login =async(req,res)=>{
     try{
-        console.log("userController")
        const user =await findByCredentials(req.body.email,req.body.password)
-       if(user ===false){
-           res.send("unable to login")
+       
+       ////// Token creation ///////////
+       const token =  await generateAuthToken(user)
+       if(user && token){
+           console.log("user and token")
+        res.send({user,token})
        }
-       res.send(user)
+       else{
+        console.log("last")
+        res.send("unable to login")
+       }
+       
     }
     catch(e){
-       res.status(400).send()
+       res.status(400).send(e)
     }
 }
 
 
 
-// const getName= async(req,res)=>{
-//     console.log("get name console")
-//     res.send('<h1>my name is sfq </h1>')
-// }
+const SigningUp=async(req,res)=>{
 
-// const getStudentsDetails=async(req,res)=>{
+   
+    const user =new User(req.body)
+    try{
+        const a1= await user.save()
+        const token =  await generateAuthToken(user)
+        res.send({a1,token})
+    }
+    catch (error) {
+        console.error(error);
+        dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
+        res.status(401).send({
+
+            message: error.message,
+
+            error:error.message
+
+        });
+        
+    }
+}
+
+
+
+
+const getUserDetails=async(req,res)=>{
     
-//     try{
+    try{
 
-//         // we want get the handle of the schema in this file
-//        const students = await Student.find()
-//        res.json(students)
-//     }
-//     catch (error) {
-//         console.error(error);
-//         dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
-//         res.render("400");
-//     }  
-// }
+       const user =req.user
+       res.send(user)
+    }
+    catch (error) {
+       res.status(400).send(error)
+    }  
+}
 
-// const getStudentsDetailsById=async(req,res)=>{
-    
-//     try{
-//         // we want get the handle of the schema in this file
-//        const student = await Student.findById(req.params.id)
-//        res.json(student)
-//     }
-//     catch (error) {
-//         console.error(error);
-//         dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
-//         res.render("400");
-//     }  
-// }
 
-// const postStudentsDetails=async(req,res)=>{
 
-//     // debugger
-//     const student =new Student({
-//         rollNumber: req.body.rollNumber,
-//         name: req.body.name,
-//         course:req.body.course,
-//         skills:req.body.skills,
-//         status :req.body.status,
-//         email:req.body.email
-//     })
-//     try{
-//         const a1= await student.save()
-//         res.json(a1)
-//     }
-//     catch (error) {
-//         console.error(error);
-//         dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
-//         res.status(401).send({
 
-//             message: error.message,
 
-//             error:error.message
+const deleteUserDetails=async(req,res)=>{
+    try{
+        const user = await User.findById(req.params.id)
+        await user.remove()
+        res.send('sucessfully deleted')
 
-//         });
-//         // res.render("400");
-//     }
-// }
+    }
+    catch (error) {
+        console.error(error);
+        dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
+        res.render("400");
+    }
+}
+
 
 // const patchStudentDetails=async(req,res)=>{
 //     try{
@@ -106,29 +105,10 @@ const siginingUp =async(req,res)=>{
 //      }
 // }
 
-// const deleteStudentDetails=async(req,res)=>{
-//     try{
-//         const student = await Student.findById(req.params.id)
-//         const a1= await student.remove()
-//         res.json(a1)
 
-//     }
-//     catch (error) {
-//         console.error(error);
-//         dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
-//         res.render("400");
-//     }
-// }
-
-
-// module.exports ={
-//     getName,
-//     getStudentsDetails,
-//     getStudentsDetailsById,
-//     postStudentsDetails,
-//     patchStudentDetails,
-//     deleteStudentDetails
-// }
 module.exports ={
-    siginingUp
+    login,
+    SigningUp,
+    getUserDetails,
+    deleteUserDetails
 }
