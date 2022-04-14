@@ -8,7 +8,7 @@ const  Validation = require("../middleWare/validation")
 const middleWare = [Token, Validation]
 
 
-const {getName,getStudentsDetails,getStudentsDetailsById, postStudentsDetails,patchStudentDetails,deleteStudentDetails}=require("../controller/control")
+const {getName,getStudentsDetails,getStudentsDetailsById, postStudentsDetails,patchStudentDetails,deleteStudentDetails,putStudentDetails}=require("../controller/control")
 
 router.get('/name',middleWare,getName)
 router.get('/',getStudentsDetails)
@@ -18,6 +18,8 @@ router.get('/:id',getStudentsDetailsById)
 router.post('/',postStudentsDetails)
 
 router.patch('/:id',patchStudentDetails)
+
+router.put('/:id',putStudentDetails)
 
 router.delete('/:id',deleteStudentDetails)
 
