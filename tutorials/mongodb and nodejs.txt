@@ -1,0 +1,24 @@
+npm install mongodb --save
+
+
+
+const InsertDetailsUsingPost = async=(req,res)=>{
+    try{  
+        console.log("post using query")
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            const  dbo = db.db("SfqDBex");
+            const  myobj = req.body
+            console.log(req.body)
+            const value=dbo.collection("customers").insertOne(myobj, function(err, result) {
+              if (err) throw err;
+              console.log("1 document inserted");
+              res.json(result)
+              db.close();
+            });           
+          });
+    }
+    catch(error){
+       console.log(error)
+    }
+}

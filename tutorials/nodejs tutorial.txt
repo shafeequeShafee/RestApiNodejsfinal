@@ -1,0 +1,49 @@
+node -v
+npm -v
+js file run cheyyaan save cheyannam, ennit=>  node filename.js 
+
+#)project initialise cheyaan 
+npm init
+
+#)nodemon install aakan =>npm i nodemon
+#)npm outdated
+#)npm i nodemon@latest // npm i nodemon@2.0.3  version koduthamathi
+
+
+#) npm i express
+
+dependencies il nodemon verum ath remove akannam , athinnu => 
+  npm uninstall nodemon
+pinnae => npm i nodemon -D
+
+
+#) mongod  type cheyyukkaa ---path illekil "Edit the system environment varriable" athil path create cheyyukkaa 
+
+
+#) api ellarkkum kittavendi => npm install cors
+
+#) mongodb
+   npm i mongodb
+   npm i mongoose
+
+
+//////////////////////    MVC /////////////
+
+model       -- SCHEMA   // Database object // Data Model which were we store data // which is your model 
+view        -- UI
+controller  -- Router   // controll all routing for you
+
+
+
+//////////////////// Log your node js error in log file ////////////////
+
+npm i winston
+
+We, need another package to have our logs rotated at a particular interval.
+Logs can be rotated based on a date, size limit,
+and old logs can be removed based on the count of elapsed days.
+
+npm i winston-daily-rotate-file
+
+
+

@@ -1,0 +1,513 @@
+extension in vs code  => MongoDB for VS code
+
+#)database is a container for collections,
+#)collection is group of documents
+#)document is a set of key value pair data
+
+#) every document in MongoDB has unique value via key called "_id"
+
+
+
+#) using in vs code 
+=> mongo.exe //command adikkukkaa
+pinnae venda comments addicha mathi
+
+#)show databases
+
+#)creating database
+    use schoolStudent  // select or create 
+
+#)remove database
+   db.dropDatabase()
+
+#)db => show the current database
+
+
+#)creating collections
+ db.createCollection(name,options)
+ db.createCollection("products")
+
+#)dropping collections
+ db.name of collection.drop()
+
+#)Data types in mongodb
+   JSON
+   BSON - Binary encoded json
+
+// date, timeStamp, Object Id , onum json support cheyyooolla
+
+
+#) inserting documents to collection
+
+ db.name of the collection.insert({"name":"sfq"})
+ db.Orders.insert({"name":"sfq"})
+ db.Orders.insert({"name":"nothing","city":"chungathara"}) 
+
+inserting many documents    
+
+  db.Orders.insertMany([{"name":"nothing","city":"chungathara"},{"name":"no name","city":"chung"}])
+
+#) updating documents
+
+  db.Orders.update({"name":"sfq is no more cccc"},{ $set:{ "mobile":"9446778229", "place":"chungathara"} })
+
+  updating many
+
+  db.Learning.updateMany({"isActive":true},{ $set:{ "isActive":false} })
+
+#) Reading Document from collection
+
+  1)find()  => return all the documents
+   db.Learning.find()
+
+  2)findOne()  => return one document // first one
+    db.Learning.findOne()
+
+  3)setting condition
+   db.Learning.find({"name":"anu"})
+   db.Learning.find({"name":"anu", "isActive":false})
+
+  4)findOneAndReplace()
+   db.Learning.findOneAndReplace({"name":"anu"},{name:"khan", "place":"kolkata", "isActive":true})
+
+  5)findOneAndDelete()
+   db.Learning.findOneAndDelete({"name":"khan"})
+
+
+#)Delete Documents
+
+ 1) db.Learning.deleteOne({"name":"khan"})
+  
+ 2)db.Learning.deleteMany({"isActive":false})  // delete manyil empty bracket annekil ellam delete aavum
+
+
+#) Queries in mongoDB
+  
+   using find method of mongoDB with operators
+   Eq - 
+   lt - lessthan 
+   lte - lessthan or equal
+   gt - greater than
+   gte - greater than or equal
+   
+   $and
+   $or
+  1) db.Learning.find({"isActive":false})   // with condition
+  2)db.Learning.find({"isActive":false,"salary":40000}) // AND by default
+  3)db.Learning.find({"salary": { $lte: 40000}}) 
+  4)db.Learning.find({"salary": { $gte: 40000}}) 
+  5)db.Learning.find({"salary":40000}) 
+ 
+  6)db.Learning.find({ $and: [ {"isActive":true},{"salary":{$gte:40000}}]})
+  7)db.Learning.find({ $or: [ {"isActive":true},{"salary":{$gte:40000}}]})
+
+
+#) Selecting Specific Fields
+
+  1)db.Learning.find({},{"leadname":1})  // get leadname key of all document from collection
+  2)db.Learning.find({},{"leadname":1, "_id":0}) 
+  3)db.Learning.find({"leadname":"das","salary":40000},{"leadname":1, "_id":1}) 
+  4)db.Learning.find({"leadname":"das","salary":40000},{"leadname":1,"name":1, "_id":1}) 
+
+
+#) Projection in mongoDB  // projection is nothing but another name for selecting fields for showing or hiding
+
+  1)db.Learning.find({"leadname":"das"},{"leadname":1}) 
+
+#) Aggregation 
+  
+  *) pipeline --- pipeline is nothing but it has multiple stages it can take  // stages is operation
+  *)options --- Document can be passed  as well
+  *)db.Learning.aggregate(pipeline, options) 
+
+   *)valid aggregate stages
+      -  $count
+      -  $group
+      -  $limit
+      -  $lookup
+      -  $match
+      -  $merge
+      -  $sort
+      -  $project
+      -  $unwind
+      -  $unset
+      -  ......
+    
+     1)
+       var pipeline =[
+          { $sort:{"leadname":1}}
+       ]
+       db.Learning.aggregate(pipeline) 
+  
+
+     2)
+       var pipeline =[
+          { $sort:{"leadname":1}},
+          { $limit : 3}
+       ]
+       db.Learning.aggregate(pipeline) 
+       
+      3)
+        var pipeline = [
+          { $group : {"_id":"leadname"}},
+          { $sort:{"salary":1}},
+          { $limit :5}
+       ]
+       db.Learning.aggregate(pipeline);
+
+
+#)  Limit and Skip
+
+   1)db.Learning.find().limit(4)
+   2)db.Learning.find().skip(2)
+
+#)  Sorting
+  
+  1)db.Learning.find().sort({"salary":1})
+    
+     1  -- ascending
+     -1 -- descending
+
+#) Creating Indexes
+
+  1)db.Learning.createIndex({"leadname":1})
+
+#) Back up & Restore
+   
+   1)  first create a folder where you want to save your data
+   2)  next, Run the command " mongodump.exe "
+   3)  verify the data dump and folder dumped correctly
+
+  seperate folerilekku vennekil =>  mongodump.exe --out  c:\data\backup
+
+    Restore
+   1) "mongorestore.exe"
+  
+ #) Relation
+
+db.UserVideos.insertMany([{"topic":"Tour","length":15,"creator":ObjectId("624e76c73cf1e26b4ff4ee45")},{"topic":"Cartoon","length":8,"creator":ObjectId("624e777d3cf1e26b4ff4ee46")}])
+
+//  join query with aggregate function in mongodb lookup  eth search cheytha mathii
+
+//// example 1
+
+db.Orders.insertMany( [
+   { "_id" : 1, "item" : "Apple", "price" : 120, "quantity" : 2 },
+   { "_id" : 2, "item" : "Orange", "price" : 80, "quantity" : 1 },
+   { "_id" : 3, "item" : "Grapes", "price" : 90, "quantity" : 1 },
+   { "_id" : 4, "item" : "Pineapple", "price" : 40, "quantity" : 2 },
+   { "_id" : 5  }
+] )
+
+
+
+db.Stocks.insertMany( [
+   { "_id" : 1, "stock" : "Apple", "description": "product 1", "instock" : 120 },
+   { "_id" : 2, "stock" : "Orange", "description": "product 2", "instock" : 80 },
+   { "_id" : 3, "stock" : "Grapes", "description": "product 3", "instock" : 60 },
+   { "_id" : 4, "stock" : "Pineapple", "description": "product 4", "instock" : 70 },
+   { "_id" : 5, "stock": null, "description": "Incomplete" },
+   { "_id" : 6 }
+] )
+
+db.Orders.aggregate( [
+   {
+     $lookup:
+       {
+         from: "Stocks",
+         localField: "item",
+         foreignField: "stock",
+         as: "Stock details"
+       }
+  }
+] )
+
+
+////   Example 2
+
+users:{    
+    "_id" : ObjectId("5684f3c454b1fd6926c324fd"),
+    "email" : "admin@gmail.com",
+    "userId" : "AD",
+    "userName" : "admin"
+}
+
+
+
+userinfo:{
+    "_id" : ObjectId("56d82612b63f1c31cf906003"),
+    "userId" : "AD",
+    "phone" : "0000000000"
+}
+
+
+userrole:{
+    "_id" : ObjectId("56d82612b63f1c31cf906003"),
+    "userId" : "AD",
+    "role" : "admin"
+}
+
+
+
+db.users.aggregate([
+
+    // Join with user_info table
+    {
+        $lookup:{
+            from: "userinfo",       // other table name
+            localField: "userId",   // name of users table field
+            foreignField: "userId", // name of userinfo table field
+            as: "user_info"         // alias for userinfo table
+        }
+    },
+    {   $unwind:"$user_info" },     // $unwind used for getting data in object or for one record only
+
+    // Join with user_role table
+    {
+        $lookup:{
+            from: "userrole", 
+            localField: "userId", 
+            foreignField: "userId",
+            as: "user_role"
+        }
+    },
+    {   $unwind:"$user_role" },
+
+    // define some conditions here 
+    {
+        $match:{
+            $and:[{"userName" : "admin"}]
+        }
+    },
+
+    // define which fields are you want to fetch
+    {   
+        $project:{
+            _id : 1,
+            email : 1,
+            userName : 1,
+            userPhone : "$user_info.phone",
+            role : "$user_role.role",
+        } 
+    }
+]);
+
+
+
+
+////////////////   Aggregation Framework ///////////////////////////////////////
+
+#) $group
+
+const pipeline =[
+  {
+    $group:{_id:"$company",totalSalary:{ $sum : "$salary"},minimumSalary:{ $min: "$salary"},maximumSalary:{ $max: "$salary"},count:{$sum:1}}
+      
+  }
+]
+db.users.aggregate(pipeline)
+
+
+#) $match
+
+const pipeline =[
+  {
+    $match:{"age":24}
+      
+  }
+]
+db.users.aggregate(pipeline)
+
+
+// age 24 aayiulla documents ellam kittum
+
+const pipeline =[
+  {
+    $match:{"languages":"css"}
+      
+  }
+]
+db.users.aggregate(pipeline)
+
+// css ulla document mathram return cheyyum
+
+
+
+#) $limit
+
+const pipeline =[
+  {
+    $match:{"age":24}
+      
+  },
+  {
+    $limit: 2   
+  }
+]
+db.users.aggregate(pipeline)
+
+// return 2 document
+
+
+
+#) $skip
+
+const pipeline =[
+  {
+    $match:{"age":24}
+      
+  },
+  {
+    $skip: 1   
+  }
+]
+db.users.aggregate(pipeline)
+
+// skip first {1 // number} document , return all other document
+
+/// pagination vendi njammakku skip um limit um oppam use cheyyaam
+
+
+
+
+#)$unwind
+
+const pipeline =[
+  {
+    $unwind:"$languages"
+      
+  }
+]
+db.users.aggregate(pipeline)
+
+/// return all document , athayath sfq nnae oru 4-5 pravashyam ndavvum , languages: c agannae onnu
+// pinnae languages: c++  onn .,.....
+
+
+const pipeline =[
+  {
+    $unwind:"$languages"
+      
+  },
+  {
+    $match:{"languages": /^c/}  /// c kond start cheyuunnaaa
+  }
+]
+db.users.aggregate(pipeline)
+
+\\\ return c kond start cheyuunnaaa
+
+const pipeline =[
+  {
+    $unwind:"$languages"
+      
+  },
+  {
+    $match:{"languages": "c++"}  /// c kond start cheyuunnaaa
+  }
+]
+db.users.aggregate(pipeline)
+
+////// return c++ ullath mathram
+
+
+
+const pipeline =[
+  {
+    $unwind:"$languages"
+      
+  },
+  {
+    $match:{"languages": /^c/}  /// c kond start cheyuunnaaa
+  },
+  {
+    $group:{_id:"$username" , favouriteLanguages:{$push:"$languages"}}
+  }
+]
+db.users.aggregate(pipeline)
+
+
+
+
+#)$project
+
+const pipeline =[
+  {
+    $project:{ username :1 ,languages :1}
+      
+  }
+  
+]
+
+
+db.users.aggregate(pipeline)
+
+/// usename and languages mathram return cheyyum
+
+
+const pipeline =[
+
+  {
+    $project:{ username :1 ,languages :1}
+      
+  },
+  {
+      $unwind:"$languages"
+      
+  }
+  
+]
+
+
+db.users.aggregate(pipeline)
+///////////////////////////////////////////////
+
+
+/// rename cheyyannum project use cheyyaam
+
+
+const pipeline =[
+
+  {
+    $project:{ "Name of user":"$username"  ,languages :1}
+      
+  }
+  
+]
+
+
+db.users.aggregate(pipeline)
+
+
+
+///////////  Best practice  ///////
+
+
+by id  
+
+
+.aggregate([
+          {
+            $lookup: {
+              from: "departments",
+              localField: "dept_id",
+              foreignField: "dept_id",
+              as: "Department",
+            }
+          },{
+            $match: {
+              "_id":mongoose.Types.ObjectId(req.params.id)
+            }
+          }
+        ])
+
+
+
+
+
+
+
+
+
+
+        
