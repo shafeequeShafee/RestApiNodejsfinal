@@ -42,10 +42,23 @@ const generateAuthToken=async (user)=>{
     user.tokens = user.tokens.concat({token:token})
     await user.save()
     return token
-   }
-   
-   
+   } 
 }
 
 
-module.exports={findByCredentials,generateAuthToken}
+const getPublicProfile=function(user){
+    if(user ===false){
+        return false
+    }
+    else{
+        
+        const userObject =user.toObject()
+        delete userObject.password
+        delete userObject.tokens
+        return userObject
+    }
+        
+}
+
+
+module.exports={findByCredentials,generateAuthToken,getPublicProfile}

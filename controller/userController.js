@@ -3,7 +3,8 @@
 ////////  Authentication and token creation 
 
 
-const {findByCredentials,generateAuthToken}= require("../CommonFunction/commonFun")
+const { Console } = require("winston/lib/winston/transports")
+const {findByCredentials,generateAuthToken,getPublicProfile}= require("../CommonFunction/commonFun")
 const {User}  = require("../models/user")
 
 const login =async(req,res)=>{
@@ -14,7 +15,9 @@ const login =async(req,res)=>{
        const token =  await generateAuthToken(user)
        if(user && token){
            console.log("user and token")
-        res.send({user,token})
+        // res.send({user,token})  
+           //hiding private data
+           res.send({user:getPublicProfile(user),token:token})
        }
        else{
         console.log("last")
@@ -39,9 +42,50 @@ const SigningUp=async(req,res)=>{
         res.send({a1,token})
     }
     catch (error) {
-        console.error(error);
-        dashLogger.error(`Error : ${error},Request : ${req.originalUrl}`);
         res.status(401).send({
+
+            message: error.message,
+
+            error:error.message
+
+        });
+        
+    }
+}
+
+
+const logOut=async(req,res)=>{
+    
+    try{
+        req.user.tokens=req.user.tokens.filter((token)=>{
+           return token.token !== req.token
+        })
+        await req.user.save()
+        res.send('sucessfully logouted')
+    }
+    catch (error) {
+        res.status(500).send({
+
+            message: error.message,
+
+            error:error.message
+
+        });
+        
+    }
+}
+
+
+
+const logOutAll=async(req,res)=>{
+    
+    try{
+        req.user.tokens=[]
+        await req.user.save()
+        res.send('sucessfully logouted all')
+    }
+    catch (error) {
+        res.status(500).send({
 
             message: error.message,
 
@@ -109,6 +153,8 @@ const deleteUserDetails=async(req,res)=>{
 module.exports ={
     login,
     SigningUp,
+    logOut,
+    logOutAll,
     getUserDetails,
     deleteUserDetails
 }
