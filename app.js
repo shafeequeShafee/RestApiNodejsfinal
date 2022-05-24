@@ -1,10 +1,29 @@
+
+
+///////////////////////////////////////////////////////////////////////////
+
 const express = require("express")
 const mongoose = require("mongoose")
-const url = 'mongodb://localhost/SfqDBex' // allekil just 'mongodb:/SfqDBex' egannae  koduthallum mathi,
+//const url = 'mongodb://localhost/SfqDBex' // allekil just 'mongodb:/SfqDBex' egannae  koduthallum mathi,
 // but chellappo verae machinillum same database ndavvum
 // athond localhost kodukkunnu
 
 /// for password security  => npm i bcryptjs
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+
+// const { MongoClient } = require('mongodb');
+// const uri ="mongodb+srv://<username>:<password>@<your-cluster-url>/sample_airbnb?retryWrites=true&w=majority";
+// const client = new MongoClient(uri);
+// client.connect();
+
+const url ="mongodb+srv://root:root@myfirstcluster.2ludm.mongodb.net/company?retryWrites=true&w=majority";
+
+
+
 
 const app = express()
 
@@ -112,3 +131,37 @@ app.listen(PORT, () => {
 // }
 
 // creatingToken()
+
+
+//////////////////////////////////////
+
+// http://localhost:1697/user/signingUp
+
+// http://localhost:1697/student
+
+/// user model
+
+// {
+//     "username":"sfq",
+//     "languages":["html, 'java"],
+//     "age":25,
+//     "company":"claysys",
+//     "salary":15000,
+//     "experience":3,
+//     "teamLead":"Das",
+//     "password":"sfq@123",
+//     "email":"shafeequeottakath1997@gmail.com"
+    
+// }
+
+
+///// student model
+// {
+//     "rollNumber":29,
+//     "name":"sfq",
+//     "course":"ec",
+//     "skills":"full skilled",
+//     "email":"sfq@gmail.com",
+//     "status":"true"
+    
+// }

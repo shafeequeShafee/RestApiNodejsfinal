@@ -1,7 +1,7 @@
-
+//////   emails send ////
+const nodeoutlook = require('nodejs-nodemailer-outlook')
 
 ////////  Authentication and token creation 
-
 
 const { Console } = require("winston/lib/winston/transports")
 const {findByCredentials,generateAuthToken,getPublicProfile}= require("../CommonFunction/commonFun")
@@ -130,6 +130,73 @@ const deleteUserDetails=async(req,res)=>{
 }
 
 
+async function sendTestEmail(req, res, next) {
+console.log(req.body.message);
+nodeoutlook.sendEmail({
+auth: {
+user: "shafeequesfq1997@outlook.com",
+pass: "Sfq@6120"
+},
+from: 'shafeequesfq1997@outlook.com',
+to: req.body.email,
+subject: `hi ${req.body.username}`,
+html: `<b>${req.body.languages}</b>`,
+text: req.body.languages,
+//replyTo: 'receiverXXX@gmail.com',
+// attachments: [
+// {
+// filename: 'text1.txt',
+// content: 'hello world!'
+// },
+// { // binary buffer as an attachment
+// filename: 'text2.txt',
+// content: new Buffer('hello world!','utf-8')
+// },
+// { // file on disk as an attachment
+// filename: 'text3.txt',
+// path: '/path/to/file.txt' // stream this file
+// },
+// { // filename and content type is derived from path
+// path: '/path/to/file.txt'
+// },
+// { // stream as an attachment
+// filename: 'text4.txt',
+// content: fs.createReadStream('file.txt')
+// },
+// { // define custom content type for the attachment
+// filename: 'text.bin',
+// content: 'hello world!',
+// contentType: 'text/plain'
+// },
+// { // use URL as an attachment
+// filename: 'license.txt',
+// path: 'https://raw.github.com/nodemailer/nodemailer/master/LICENSE'
+// },
+// { // encoded string as an attachment
+// filename: 'text1.txt',
+// content: 'aGVsbG8gd29ybGQh',
+// encoding: 'base64'
+// },
+// { // data uri as an attachment
+// path: 'data:text/plain;base64,aGVsbG8gd29ybGQ='
+// },
+// {
+// // use pregenerated MIME node
+// raw: 'Content-Type: text/plain\r\n' +
+// 'Content-Disposition: attachment;\r\n' +
+// '\r\n' +
+// 'Hello world!'
+// }
+// ],
+onError: (e) => console.log(e),
+onSuccess: (i) => console.log(i)
+}
+
+);
+res.send("email sent");
+}
+
+
 // const patchStudentDetails=async(req,res)=>{
 //     try{
 //         const student = await Student.findById(req.params.id)
@@ -156,5 +223,6 @@ module.exports ={
     logOut,
     logOutAll,
     getUserDetails,
-    deleteUserDetails
+    deleteUserDetails,
+    sendTestEmail
 }
