@@ -165,3 +165,8 @@ app.listen(PORT, () => {
 //     "status":"true"
     
 // }
+
+//////////////////// git Authentication ///////////////
+
+// git config --global user.name "shafeequeShafee"
+// git config --global user.email "shafeequeottakath1997@gmail.com"
