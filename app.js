@@ -13,6 +13,8 @@ const mongoose = require("mongoose")
 
 
 
+
+
 //////////////////////////////////////////////////////////////////////////
 
 // const { MongoClient } = require('mongodb');
@@ -32,11 +34,14 @@ const app = express()
 
 
 //// eth oru middleware but vilikenda avashyam illa... first load aavunna middleware  ///
-app.use(DateGenerator)
-function DateGenerator(req, res, next) {
-    console.log(new Date())
-    next()
-}
+// app.use(DateGenerator)
+// function DateGenerator(req, res, next) {
+//     console.log(new Date())
+//     next()
+// }
+
+
+
 
 // app.use((req,res,next)=>{
 //     if(req.method ==='GET'){
@@ -67,13 +72,16 @@ app.use(express.json()) // json format use cheyyaaaan
 
 app.use(express.urlencoded({ extended: true }))   // eth vennam ennu illa, forms nnu data edukkumbol mathram mathi
 
+
+
 const routerStaff = require("./routers/staffs")
 const studentRouter = require("./routers/students")
 const Companyrouter = require("./routers/companys")
 const Serveyrouter = require("./routers/serveys")
-
-
 const routerUser = require("./routers/users")
+
+
+
 
 app.use('/student', studentRouter)
 app.use('/staff', routerStaff)
